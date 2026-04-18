@@ -85,7 +85,7 @@ useEffect(() => {
 }, [currentIndex, fullText]);
 
     return (
-        <div className="h-full w-full bg-[#300A24] bg-opacity-95 p-4 font-mono text-sm overflow-auto text-green-400 font-medium">
+        <div className="h-full w-full bg-[#050505] p-4 font-mono text-sm overflow-auto text-green-400 font-medium select-text">
             <pre className="whitespace-pre-wrap leading-relaxed m-0 p-0 font-inherit drop-shadow-md">
                 {text}
             </pre>
