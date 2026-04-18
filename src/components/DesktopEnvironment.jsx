@@ -9,7 +9,7 @@ const DesktopEnvironment = () => {
     const { windows } = useWindowManager();
 
     return (
-        <div className="w-screen h-screen overflow-hidden relative selection:bg-[#E95420]/30 select-none">
+        <div className="w-screen h-screen overflow-hidden relative selection:bg-emerald-500/20 select-none bg-transparent">
             <TopBar />
             <Dock />
 

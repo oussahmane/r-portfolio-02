@@ -1,6 +1,6 @@
 import React from 'react';
 import { useWindowManager } from '../contexts/WindowManagerContext';
-import { Terminal as TerminalIcon, Code, Smartphone, Monitor, Shield, Grip } from 'lucide-react';
+import { Terminal as TerminalIcon, Code2, Smartphone, Monitor, ShieldAlert, Grip, Network, Cpu } from 'lucide-react';
 
 // Import our custom apps
 import WebDev from './apps/WebDev';
@@ -12,13 +12,12 @@ import OperatingSystems from './apps/OperatingSystems';
 import Networking from './apps/Networking';
 
 const DOCK_APPS = [
-    { id: 'web', title: 'Web Development', icon: Code, component: WebDev, color: 'text-blue-400', bg: 'bg-blue-500/10' },
-    { id: 'mobile', title: 'Mobile Development', icon: Smartphone, component: MobileDev, color: 'text-green-400', bg: 'bg-green-500/10' },
-    { id: 'desktop', title: 'Desktop Apps', icon: Monitor, component: DesktopDev, color: 'text-purple-400', bg: 'bg-purple-500/10' },
-    { id: 'os', title: 'Operating Systems', icon: TerminalIcon, component: OperatingSystems, color: 'text-orange-400', bg: 'bg-orange-500/10' },
-    { id: 'network', title: 'Networking', icon: Shield, component: Networking, color: 'text-cyan-400', bg: 'bg-cyan-500/10' },
-    { id: 'cyber', title: 'Cybersecurity', icon: Shield, component: Cybersecurity, color: 'text-red-400', bg: 'bg-red-500/10' },
-    { id: 'terminal', title: 'Terminal', icon: TerminalIcon, component: Terminal, color: 'text-white', bg: 'bg-white/10' },
+    { id: 'web', title: 'Secure Web Dev', icon: Code2, component: WebDev, color: 'text-blue-400', bg: 'bg-blue-500/10' },
+    { id: 'mobile', title: 'Mobile Security', icon: Smartphone, component: MobileDev, color: 'text-emerald-400', bg: 'bg-emerald-500/10' },
+    { id: 'network', title: 'Network Engineering', icon: Network, component: Networking, color: 'text-cyan-400', bg: 'bg-cyan-500/10' },
+    { id: 'cyber', title: 'Offensive Security', icon: ShieldAlert, component: Cybersecurity, color: 'text-emerald-500', bg: 'bg-emerald-500/10' },
+    { id: 'os', title: 'System Architecture', icon: Cpu, component: OperatingSystems, color: 'text-orange-400', bg: 'bg-orange-500/10' },
+    { id: 'terminal', title: 'System Terminal', icon: TerminalIcon, component: Terminal, color: 'text-white', bg: 'bg-white/10' },
 ];
 
 const Dock = () => {
@@ -29,7 +28,7 @@ const Dock = () => {
     };
 
     return (
-        <div className="fixed left-0 top-7 bottom-0 w-12 sm:w-16 bg-black/60 flex flex-col items-center py-4 z-40 backdrop-blur-md shadow-xl border-r border-white/10">
+        <div className="fixed left-0 top-7 bottom-0 w-12 sm:w-16 bg-black/80 flex flex-col items-center py-4 z-40 backdrop-blur-xl shadow-2xl border-r border-white/5">
             <div className="flex-1 flex flex-col items-center space-y-2 sm:space-y-4 w-full">
                 {DOCK_APPS.map((app) => {
                     const isOpen = windows.some((w) => w.id === app.id);
@@ -42,16 +41,16 @@ const Dock = () => {
                         >
                             <button
                                 onClick={() => handleAppClick(app)}
-                                className={`relative w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center transition-all duration-200 hover:bg-white/10 ${isOpen ? 'bg-white/5' : ''
-                                    } ${app.bg} hover:shadow-lg`}
+                                className={`relative w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 ${isOpen ? 'bg-white/5' : ''
+                                    } ${app.bg} hover:shadow-[0_0_15px_rgba(255,255,255,0.1)]`}
                                 title={app.title}
                             >
-                                <Icon size={20} className={`${app.color} drop-shadow-md sm:w-6 sm:h-6`} />
+                                <Icon size={20} className={`${app.color} drop-shadow-[0_0_8px_rgba(0,0,0,0.5)] sm:w-6 sm:h-6`} />
                             </button>
 
                             {/* Open Indicator Dot */}
                             {isOpen && (
-                                <div className="absolute left-1 w-1.5 h-1.5 rounded-full bg-[#E95420]" />
+                                <div className="absolute left-1 w-1 h-3 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
                             )}
 
                             {/* Tooltip */}

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Wifi, Volume2, BatteryCharging, ChevronDown } from 'lucide-react';
+import { Wifi, Volume2, BatteryCharging, ChevronDown, ShieldAlert } from 'lucide-react';
 
 const TopBar = () => {
     const [currentTime, setCurrentTime] = useState(new Date());
@@ -20,12 +20,13 @@ const TopBar = () => {
     };
 
     return (
-        <div className="h-7 w-full bg-black/80 text-white text-xs sm:text-sm font-medium grid grid-cols-3 px-1 sm:px-4 z-50 fixed top-0 select-none shadow-md">
+        <div className="h-7 w-full bg-black/60 text-white text-[10px] font-bold grid grid-cols-3 px-1 sm:px-4 z-50 fixed top-0 select-none shadow-2xl backdrop-blur-md border-b border-white/5 uppercase tracking-widest">
             {/* Left section: Activities */}
-            <div className="flex items-center justify-start">
-                <div className="flex items-center hover:bg-white/10 px-1 sm:px-2 py-0.5 rounded cursor-pointer transition-colors overflow-hidden">
-                    <span className="hidden sm:inline">Activities</span>
-                    <span className="sm:hidden font-bold">Ubuntu</span>
+            <div className="flex items-center justify-start gap-3">
+                <div className="flex items-center hover:bg-emerald-500/10 px-1 sm:px-2 py-0.5 rounded cursor-pointer transition-all text-emerald-400 gap-2">
+                    <ShieldAlert size={14} className="flex-shrink-0" />
+                    <span className="hidden sm:inline">SEC_OPS // STATION_01</span>
+                    <span className="sm:hidden font-black">ROOT</span>
                 </div>
             </div>
 

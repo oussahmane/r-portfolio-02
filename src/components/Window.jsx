@@ -37,50 +37,47 @@ const Window = ({ window: appWindow }) => {
             variants={windowVariants}
             transition={{ duration: 0.2 }}
             onPointerDown={() => focusWindow(id)}
-            className={`absolute flex flex-col overflow-hidden bg-[#2D2D2D] md:rounded-lg shadow-2xl border border-white/10 ${isMaximized
+            className={`absolute flex flex-col overflow-hidden bg-[#0A0A0A] md:rounded-2xl shadow-[0_35px_60px_-15px_rgba(0,0,0,0.6)] border border-white/10 ${isMaximized
                 ? 'top-7 left-12 sm:left-16 right-0 bottom-0 w-auto h-auto rounded-none'
-                : 'top-7 md:top-20 left-12 sm:left-16 md:left-40 right-0 md:right-auto bottom-0 md:bottom-auto w-auto md:w-[800px] h-[calc(100vh-1.75rem)] md:h-[600px] max-w-[calc(100vw-3rem)] sm:max-w-[calc(100vw-4rem)] md:max-w-[calc(100vw-5rem)] max-h-[calc(100vh-1.75rem)] md:max-h-[calc(100vh-3rem)] rounded-none md:rounded-lg'
+                : 'top-7 md:top-20 left-12 sm:left-16 md:left-40 right-0 md:right-auto bottom-0 md:bottom-auto w-auto md:w-[900px] h-[calc(100vh-1.75rem)] md:h-[650px] max-w-[calc(100vw-3rem)] sm:max-w-[calc(100vw-4rem)] md:max-w-[calc(100vw-5rem)] max-h-[calc(100vh-1.75rem)] md:max-h-[calc(100vh-3rem)] rounded-none md:rounded-2xl'
                 }`}
             style={{ zIndex }}
         >
-            {/* Window Header (Ubuntu Style) */}
+            {/* Window Header */}
             <div
-                className={`h-10 flex items-center justify-between px-3 select-none ${isActive ? 'bg-[#3A3A3A]' : 'bg-[#2D2D2D]'
-                    } border-b border-black/20 handle cursor-grab active:cursor-grabbing`}
+                className={`h-11 flex items-center justify-between px-4 select-none ${isActive ? 'bg-[#151515]' : 'bg-[#0F0F0F]'
+                    } border-b border-white/5 handle cursor-grab active:cursor-grabbing`}
             >
                 {/* Left Side: Window Controls (Ubuntu style) */}
                 <div className="flex items-center space-x-2">
-                    {/* Close - Orange/Red */}
                     <button
                         onClick={(e) => {
                             e.stopPropagation();
                             closeWindow(id);
                         }}
-                        className="w-3.5 h-3.5 rounded-full bg-[#E95420] hover:bg-[#ff6e3d] flex items-center justify-center transition-colors shadow-sm"
+                        className="w-3 h-3 rounded-full bg-[#ff5f56] hover:bg-[#ff5f56]/80 flex items-center justify-center transition-all shadow-md group"
                     >
-                        <span className="opacity-0 hover:opacity-100 text-[8px] text-black">✖</span>
+                        <span className="opacity-0 group-hover:opacity-100 text-[6px] text-black">✖</span>
                     </button>
 
-                    {/* Minimize - Gray/Black */}
                     <button
                         onClick={(e) => {
                             e.stopPropagation();
                             minimizeWindow(id);
                         }}
-                        className="w-3.5 h-3.5 rounded-full bg-[#D6D6D6] hover:bg-white flex items-center justify-center transition-colors shadow-sm"
+                        className="w-3 h-3 rounded-full bg-[#ffbd2e] hover:bg-[#ffbd2e]/80 flex items-center justify-center transition-all shadow-md group"
                     >
-                        <span className="opacity-0 hover:opacity-100 text-[10px] text-black pb-1">-</span>
+                        <span className="opacity-0 group-hover:opacity-100 text-[8px] text-black pb-1">-</span>
                     </button>
 
-                    {/* Maximize - Gray/Black */}
                     <button
                         onClick={(e) => {
                             e.stopPropagation();
                             maximizeWindow(id);
                         }}
-                        className="w-3.5 h-3.5 rounded-full bg-[#D6D6D6] hover:bg-white flex items-center justify-center transition-colors shadow-sm"
+                        className="w-3 h-3 rounded-full bg-[#27c93f] hover:bg-[#27c93f]/80 flex items-center justify-center transition-all shadow-md group"
                     >
-                        <span className="opacity-0 hover:opacity-100 text-[8px] text-black rotate-45">⤢</span>
+                        <span className="opacity-0 group-hover:opacity-100 text-[6px] text-black rotate-45">⤢</span>
                     </button>
                 </div>
 
