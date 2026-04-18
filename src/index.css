@@ -1,0 +1,35 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ubuntu-purple: #300A24;
+  --color-ubuntu-orange: #E95420;
+  --color-ubuntu-light-purple: #5E2750;
+  --color-ubuntu-dark-gray: #1E1E1E;
+  --color-ubuntu-panel: rgba(30, 30, 30, 0.85);
+}
+
+body {
+  margin: 0;
+  font-family: 'Ubuntu', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  overflow: hidden;
+  background: linear-gradient(135deg, #5E2750 0%, #300A24 100%);
+  color: white;
+}
+
+/* Custom scrollbar for terminal/content areas */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.4);
+}
