@@ -1,5 +1,5 @@
 import React from 'react';
-import { Smartphone, Layers, Layout, Navigation, ShieldCheck, Lock, Fingerprint, EyeOff } from 'lucide-react';
+import { Smartphone, Layers, Layout, Navigation, ShieldCheck, Lock, Fingerprint, EyeOff, Activity } from 'lucide-react';
 
 const MobileDev = () => {
     return (

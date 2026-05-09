@@ -6,6 +6,7 @@ import { useWindowManager } from '../contexts/WindowManagerContext';
 import { AnimatePresence } from 'framer-motion';
 import { Folder, Monitor, Terminal } from 'lucide-react';
 import FolderView from './apps/FolderView';
+import MatrixBackground from './MatrixBackground';
 
 const DESKTOP_STRUCTURE = [
     {
@@ -35,7 +36,7 @@ const DESKTOP_STRUCTURE = [
 const DesktopEnvironment = () => {
     const { windows, openWindow } = useWindowManager();
 
-    const handleFolderDoubleClick = (folder) => {
+    const handleFolderClick = (folder) => {
         openWindow(
             folder.id, 
             folder.title, 
@@ -46,6 +47,7 @@ const DesktopEnvironment = () => {
 
     return (
         <div className="w-screen h-screen overflow-hidden relative selection:bg-emerald-500/20 select-none bg-transparent">
+            <MatrixBackground />
             <TopBar />
             <Dock />
 
@@ -56,7 +58,7 @@ const DesktopEnvironment = () => {
                     return (
                         <div 
                             key={folder.id}
-                            onDoubleClick={() => handleFolderDoubleClick(folder)}
+                            onClick={() => handleFolderClick(folder)}
                             className="flex flex-col items-center justify-center space-y-2 group cursor-pointer w-24 p-2 rounded-xl hover:bg-white/5 transition-all"
                         >
                             <div className={`relative p-1 ${folder.color} group-hover:scale-110 transition-transform duration-300`}>
