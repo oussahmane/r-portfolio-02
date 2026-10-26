@@ -1,96 +1,72 @@
-import React, { useState, useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { profile } from '../../data/profile';
+import { useWindowManager } from '../../hooks/useWindowManager';
+import { runCommand } from '../../lib/terminalCommands';
 
-const Terminal = () => {
-    const [text, setText] = useState('');
-    const [currentIndex, setCurrentIndex] = useState(0);
+const INTRO = `${profile.name} — workstation\nType help to list commands. The same sections are available from the menu and dock.`;
 
-//     const fullText = `enigma@ubuntu:~$ neofetch
-//        _,met$$$$$gg.          enigma@ubuntu
-//     ,g$$$$$$$$$$$$$$$P.       -------------
-//   ,g$$P"     """Y$$.".        OS: Ubuntu 22.04.3 LTS x86_64
-//  ,$$P'              \`$$$.     Host: Portfolio Machine v1.0
-// ',$$P       ,ggs.     \`$$b:   Kernel: 5.15.0-89-generic
-// \`d$$'     ,$P"'   .    $$$    Uptime: 42 days, 13 hours, 37 mins
-//  $$P      d$'     ,    $$P    Packages: 2435 (dpkg), 12 (snap)
-//  $$:      $$.   -    ,d$$'    Shell: bash 5.1.16
-//  $$;      Y$b._   _,d$P'      Resolution: 1920x1080
-//  Y$b       \`"Y$$$$P"'         DE: GNOME 42.9
-//  \`Y$b        \`""'             WM: Mutter
-//   \`Y$b                        WM Theme: Adwaita
-//     \`"Y$b.                    Theme: Yaru-dark [GTK2/3]
-//        \`"Y$b.                 Icons: Yaru [GTK2/3]
-//           \`"Y$b.              Terminal: gnome-terminal
-//               \`""             CPU: 12th Gen Intel i7-12700K (20) @ 4.900GHz
-//                               GPU: NVIDIA GeForce RTX 3080
-//                               Memory: 10485MiB / 32000MiB
+export default function Terminal() {
+  const { openWindow } = useWindowManager();
+  const [lines, setLines] = useState(() => [{ kind: 'out', text: INTRO }]);
+  const [value, setValue] = useState('');
+  const [status, setStatus] = useState('');
+  const inputRef = useRef(null);
+  const scrollRef = useRef(null);
 
+  useEffect(() => {
+    scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight });
+  }, [lines]);
 
-const fullText = `
-enigma@soc-station:~$ neofetch
-//        _,met$$$$$gg.          oussama@soc-station
-//     ,g$$$$$$$$$$$$$$$P.       -------------------
-//   ,g$$P"     """Y$$.".        OS: Kali GNU/Linux Rolling x86_64
-//  ,$$P'              \`$$$.     Host: Security-Research-V1
-// ',$$P       ,ggs.     \`$$b:   Kernel: 6.5.0-kali3-amd64
-// \`d$$'     ,$P"'   .    $$$    Uptime: 13 days, 7 hours, 21 mins
-//  $$P      d$'     ,    $$P    Packages: 3142 (dpkg), 15 (snap)
-//  $$:      $$.   -    ,d$$'    Shell: zsh 5.9
-//  $$;      Y$b._   _,d$P'      Resolution: 2560x1440
-//  Y$b       \`"Y$$$$P"'         DE: Xfce 4.18
-//  \`Y$b        \`""'             WM: Xfwm4
-//   \`Y$b                        Theme: Kali-Dark [GTK2/3]
-//     \`"Y$b.                    Icons: Flat-Remix-Blue-Dark
-//        \`"Y$b.                 Terminal: qterminal
-//           \`"Y$b.              CPU: 13th Gen Intel i9-13900K (32) @ 5.8GHz
-//               \`""             GPU: NVIDIA GeForce RTX 4090
-//                               Memory: 16384MiB / 64000MiB
-
-
-enigma@soc-station:~$ whoami
-Oussama Abderrahmane: Senior Cybersecurity Pentester & Full-Stack Developer
-
-enigma@soc-station:~$ certs --list
-[*] Cisco Certified Network Associate (CCNA 1, 2, 3)
-[*] Cisco Certified Ethical Hacker
-[*] Web & Mobile Development Expert
-
-enigma@soc-station:~$ echo "Initializing secure workstation environment..."
-enigma@soc-station:~$ _`;
-
-    // useEffect(() => {
-    //     if (currentIndex < fullText.length) {
-    //         const timeout = setTimeout(() => {
-    //             setText(prev => prev + fullText[currentIndex]);
-    //             setCurrentIndex(prev => prev + 1);
-    //         }, 5); // Fast typing speed
-
-    //         return () => clearTimeout(timeout);
-    //     }
-    // }, [currentIndex, fullText]);
-
-
-useEffect(() => {
-    if (currentIndex < fullText.length) {
-        // Add multiple characters at once for speed
-        const BATCH_SIZE = 5;
-        const nextIndex = Math.min(currentIndex + BATCH_SIZE, fullText.length);
-        
-        const frame = requestAnimationFrame(() => {
-            setText(prev => prev + fullText.substring(currentIndex, nextIndex));
-            setCurrentIndex(nextIndex);
-        });
-        
-        return () => cancelAnimationFrame(frame);
+  const submit = (event) => {
+    event.preventDefault();
+    const raw = value;
+    setValue('');
+    const result = runCommand(raw, openWindow);
+    if (result.clear) {
+      setLines([{ kind: 'out', text: INTRO }]);
+      setStatus('Screen cleared.');
+      return;
     }
-}, [currentIndex, fullText]);
+    setLines((current) => [
+      ...current,
+      { kind: 'in', text: raw },
+      ...(result.output ? [{ kind: 'out', text: result.output }] : []),
+    ]);
+    setStatus(result.output || 'Ready.');
+  };
 
-    return (
-        <div className="h-full w-full bg-[#050505] p-4 font-mono text-sm overflow-auto text-green-400 font-medium select-text">
-            <pre className="whitespace-pre-wrap leading-relaxed m-0 p-0 font-inherit drop-shadow-md">
-                {text}
-            </pre>
-        </div>
-    );
-};
-
-export default Terminal;
+  return (
+    <div className="flex h-full flex-col bg-[#0c100e] font-mono text-[15px] leading-6 text-stone-200">
+      <div ref={scrollRef} className="min-h-0 flex-1 overflow-auto p-4">
+        {lines.map((line, index) => (
+          <pre key={`${line.kind}-${index}`} className={`mb-3 whitespace-pre-wrap ${line.kind === 'in' ? 'text-emerald-100' : 'text-stone-200'}`}>
+            {line.kind === 'in' ? `$ ${line.text}` : line.text}
+          </pre>
+        ))}
+      </div>
+      <p className="sr-only" aria-live="polite">
+        {status}
+      </p>
+      <form className="flex items-center gap-2 border-t border-white/10 px-4 py-3" onSubmit={submit}>
+        <label className="sr-only" htmlFor="terminal-command">
+          Terminal command
+        </label>
+        <span aria-hidden="true" className="text-emerald-200/80">
+          $
+        </span>
+        <input
+          id="terminal-command"
+          ref={inputRef}
+          value={value}
+          onChange={(event) => setValue(event.target.value)}
+          className="min-w-0 flex-1 bg-transparent text-stone-50 outline-none"
+          autoCapitalize="off"
+          autoComplete="off"
+          autoCorrect="off"
+          spellCheck={false}
+          placeholder="Type help"
+        />
+      </form>
+    </div>
+  );
+}
