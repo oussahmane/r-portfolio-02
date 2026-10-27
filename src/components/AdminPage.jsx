@@ -11,7 +11,7 @@ export default function AdminPage() {
   }, []);
 
   return (
-    <div className="min-h-dvh bg-[#070807] text-stone-100">
+    <div className="h-dvh overflow-y-auto overscroll-y-contain bg-[#070807] text-stone-100">
       <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6">
         <a className="text-sm text-stone-400 underline-offset-4 hover:text-stone-100 hover:underline" href={import.meta.env.BASE_URL}>
           Portfolio

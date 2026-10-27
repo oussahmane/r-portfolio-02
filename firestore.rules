@@ -1,0 +1,55 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Collection: messages
+    // Document ID: auto-id
+    // Fields:
+    //   - name: string (required, 1-80)
+    //   - email: string (required, sender address, max 120)
+    //   - message: string (required, 1-2000)
+    //   - createdAt: timestamp (required, server time, immutable)
+    //   - status: string (required, unread on create, read or unread after)
+    //   - processingStatus: string (required, pending, immutable)
+    //   - source: string (required, r-portfolio-02, immutable)
+
+    function isAdmin() {
+      return request.auth != null
+        && request.auth.token.email == 'oussahmane@gmail.com';
+    }
+
+    function isValidEmail(email) {
+      return email is string
+        && email.size() > 0
+        && email.size() <= 120
+        && email.matches('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$');
+    }
+
+    function isValidMessage(data) {
+      return data.keys().hasOnly(['name', 'email', 'message', 'createdAt', 'status', 'processingStatus', 'source'])
+        && data.name is string
+        && data.name.size() > 0
+        && data.name.size() <= 80
+        && isValidEmail(data.email)
+        && data.message is string
+        && data.message.size() > 0
+        && data.message.size() <= 2000
+        && data.createdAt is timestamp
+        && data.status in ['unread', 'read']
+        && data.processingStatus == 'pending'
+        && data.source == 'r-portfolio-02';
+    }
+
+    match /messages/{messageId} {
+      allow read, delete: if isAdmin();
+
+      allow create: if isValidMessage(request.resource.data)
+        && request.resource.data.status == 'unread'
+        && request.resource.data.createdAt == request.time;
+
+      allow update: if isAdmin()
+        && isValidMessage(request.resource.data)
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status']);
+    }
+  }
+}

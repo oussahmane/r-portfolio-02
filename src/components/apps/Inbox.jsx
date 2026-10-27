@@ -106,7 +106,7 @@ export default function Inbox() {
 
   return (
     <div className="mx-auto max-w-3xl">
-      <p className="kicker">Firestore · td-portfolio-01</p>
+      <p className="kicker">Firestore · r-portfolio-02</p>
       <div className="mt-2 flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-2xl font-semibold tracking-tight text-stone-50">Inbox</h1>
         {user ? (
